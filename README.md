@@ -9,9 +9,9 @@ Python decorators for type and value checking at runtime. Also, some boilerplate
 Takes three arguments (var_name_of_parameter, position_in_parameters, allowed_values) and throws a
 ValueError if the value in the specified parameter is not present in the allowed_values.
 
-var_name_of_parameter - is just the variable name
-position_in_parameters - is the index at which this parameter is in the function definition. The
-first argument passed to a function is '0' and the second one is '1' and so on.
+* var_name_of_parameter - is just the variable name
+* position_in_parameters - is the index at which this parameter is in the function definition. The
+* first argument passed to a function is '0' and the second one is '1' and so on.
 allowed_vals - is a list of allowed values that this variable can hold.
 
 ``` python
@@ -27,10 +27,10 @@ def test_value(first, second):
 Takes three arguments (var_name_of_parameter, position_in_parameters, required_type) and throws a
 TypeError if the value in the specified parameter is not of the required_type.
 
-var_name_of_parameter - is just the variable name
-position_in_parameters - is the index at which this parameter is in the function definition. The
+* var_name_of_parameter - is just the variable name
+* position_in_parameters - is the index at which this parameter is in the function definition. The
 first argument passed to a function is '0' and the second one is '1' and so on.
-required_type - is a Type such as int, string, or your CustomClass.
+* required_type - is a Type such as int, string, or your CustomClass.
 
 ``` python
 @type_check("first", 0, int)
