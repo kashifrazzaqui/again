@@ -60,6 +60,7 @@ class TestClass(EventSource):
         print("ready")
 
     def event_occurs(self):
+        # parameters for fire are 'event name' followed by anything you want to pass to the listener
         self.fire("big bang event", "what a blast!")
 
 
