@@ -57,9 +57,6 @@ def simple_listener(payload):
 class TestClass(EventSource):
     def __init__(self):
         super(TestClass, self).__init__()
-
-        # takes an event (any valid python object) and a listener (any valid python function)
-        self.add_listener("big bang event", simple_listener)
         print("ready")
 
     def event_occurs(self):
@@ -68,7 +65,11 @@ class TestClass(EventSource):
 
 def demo():
     t = TestClass()
-    t.event_occurs()
+    
+    # takes an event (any valid python object) and a listener (any valid python function)
+    t.add_listener("big bang event", simple_listener)
+    
+    t.event_occurs() #when the event is fired in this method, the listener is informed
 
 if __name__ == '__main__':
     demo()
