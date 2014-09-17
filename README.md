@@ -4,6 +4,29 @@ pyutils
 Python decorators for type and value checking at runtime. Also, some boilerplate code for making classes that support event registration and firing.
 
 
+### logging decorator
+Takes two optional arguments both are boolean and False by default
+ - supress_args
+ - supress_results
+Prints params provided and result returned
+
+``` python
+
+@log()
+def my_func(name, gender):
+    age = findByGender(name)
+    return age
+```
+
+``` python
+
+@log(supress_results=True)
+def my_func(name, gender):
+    age = findByGender(name)
+    return age
+```
+
+
 ### Value checking decorator
 
 Takes three arguments (var_name_of_parameter, position_in_parameters, allowed_values) and throws a
@@ -66,10 +89,10 @@ class TestClass(EventSource):
 
 def demo():
     t = TestClass()
-    
+
     # takes an event (any valid python object) and a listener (any valid python function)
     t.add_listener("big bang event", simple_listener)
-    
+
     t.event_occurs() #when the event is fired in this method, the listener is informed
 
 if __name__ == '__main__':
