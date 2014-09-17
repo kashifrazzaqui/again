@@ -9,9 +9,15 @@ def log(supress_args=False, supress_result=False):
     def decorator(fn):
         def func(*args, **kwargs):
             if not supress_args:
-                string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1}'.format(fn.func_name, args))
+                arg_string = ""
+                for i in range(0, len(args)):
+                    var_name = fn.func_code.co_varnames[i]
+                    if var_name != "self":
+                        arg_string += var_name + ":" + str(args[i]) + ","
+                arg_string = arg_string[0:len(arg_string)-1]
+                string = (RED + BOLD + '>> ' + END + 'Calling {0}({1})'.format(fn.func_name, arg_string))
                 if len(kwargs):
-                    string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1} and kwargs {2}'.format(fn.func_name, args, kwargs))
+                    string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1} and kwargs {2}'.format(fn.func_name, arg_string, kwargs))
                 print (string)
             result = fn(*args, **kwargs)
             if not supress_result:
