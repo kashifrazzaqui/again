@@ -5,7 +5,7 @@ BLUE = '\033[94m'
 BOLD = '\033[1m'
 END = '\033[0m'
 
-def log(supress_args=False, supress_result=False):
+def log(supress_args=False, supress_result=False, receiver=None):
     def decorator(fn):
         def func(*args, **kwargs):
             if not supress_args:
@@ -18,10 +18,18 @@ def log(supress_args=False, supress_result=False):
                 string = (RED + BOLD + '>> ' + END + 'Calling {0}({1})'.format(fn.func_name, arg_string))
                 if len(kwargs):
                     string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1} and kwargs {2}'.format(fn.func_name, arg_string, kwargs))
-                print (string)
+                if receiver:
+                    receiver(string)
+                else:
+                    print (string)
+
             result = fn(*args, **kwargs)
             if not supress_result:
-                print (BLUE + BOLD + '<< ' + END + 'Return {0} with result :{1}'.format(fn.func_name, result))
+                string = BLUE + BOLD + '<< ' + END + 'Return {0} with result :{1}'.format(fn.func_name, result)
+                if receiver:
+                    receiver(string)
+                else:
+                    print (string)
             return result
         return func
     return decorator

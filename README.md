@@ -5,10 +5,13 @@ Python decorators for type and value checking at runtime. Also, some boilerplate
 
 
 ### logging decorator
-Takes two optional arguments both are boolean and False by default
- - supress_args
- - supress_results
-Prints params provided and result returned
+Takes three optional arguments both are boolean and False by default
+ - supress_args takes a boolean
+ - supress_results takes a boolean
+ - reciever takes a function for logging which takes a string as a parameter, by default receiver
+   is set to None which causes it to print string to stdout
+
+logs params provided and result returned
 
 ``` python
 
