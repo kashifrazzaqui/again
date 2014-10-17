@@ -4,18 +4,25 @@ pyutils
 Python decorators for type and value checking at runtime. Also, some boilerplate code for making classes that support event registration and firing.
 
 
-### logging decorator
-Takes three optional arguments both are boolean and False by default
- - supress_args takes a boolean
- - supress_results takes a boolean
- - reciever takes a function for logging which takes a string as a parameter, by default receiver
+### logging decorators
+
+Logs parameters provided and result returned. it comes in two forms _@log_ and _@logx_
+
+*@log* takes no arguments, prints params and result
+
+*@logx*
+
+Takes four optional arguments both are boolean and False by default
+ - *supress_all_args* takes a boolean and suppresses all args
+ - *supress_args* takes a list of string arg names to supress
+ - *supress_results* takes a boolean
+ - *reciever* takes a function for logging which takes a string as a parameter, by default receiver
    is set to None which causes it to print string to stdout
 
-logs params provided and result returned
 
 ``` python
 
-@log()
+@log
 def my_func(name, gender):
     age = findByGender(name)
     return age
@@ -23,7 +30,7 @@ def my_func(name, gender):
 
 ``` python
 
-@log(supress_results=True)
+@logx(supress_results=True)
 def my_func(name, gender):
     age = findByGender(name)
     return age

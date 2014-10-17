@@ -5,14 +5,44 @@ BLUE = '\033[94m'
 BOLD = '\033[1m'
 END = '\033[0m'
 
-def log(supress_args=False, supress_result=False, receiver=None):
+def log(fn):
+    """
+    logs parameters and result - takes no arguments
+    """
+    def func(*args, **kwargs):
+        arg_string = ""
+        for i in range(0, len(args)):
+            var_name = fn.func_code.co_varnames[i]
+            if var_name != "self":
+                arg_string += var_name + ":" + str(args[i]) + ","
+        arg_string = arg_string[0:len(arg_string)-1]
+        string = (RED + BOLD + '>> ' + END + 'Calling {0}({1})'.format(fn.func_name, arg_string))
+        if len(kwargs):
+            string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1} and kwargs {2}'.format(fn.func_name, arg_string, kwargs))
+        print (string)
+        result = fn(*args, **kwargs)
+        string = BLUE + BOLD + '<< ' + END + 'Return {0} with result :{1}'.format(fn.func_name, result)
+        print (string)
+        return result
+    return func
+
+
+def logx(supress_args=[], supress_all_args=False, supress_result=False, receiver=None):
+    """
+    logs parameters and result
+    takes arguments
+        supress_args - list of parameter names to supress
+        supress_all_args - boolean to supress all arguments
+        supress_result - boolean to supress result
+        receiver - custom logging function which takes a string as input; defaults to logging on stdout
+    """
     def decorator(fn):
         def func(*args, **kwargs):
-            if not supress_args:
+            if not supress_all_args:
                 arg_string = ""
                 for i in range(0, len(args)):
                     var_name = fn.func_code.co_varnames[i]
-                    if var_name != "self":
+                    if var_name != "self" and var_name not in supress_args:
                         arg_string += var_name + ":" + str(args[i]) + ","
                 arg_string = arg_string[0:len(arg_string)-1]
                 string = (RED + BOLD + '>> ' + END + 'Calling {0}({1})'.format(fn.func_name, arg_string))
