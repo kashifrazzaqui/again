@@ -12,7 +12,6 @@ def log(fn):
         arg_string = ""
         for i in range(0, len(args)):
             var_name = fn.__code__.co_varnames[i]
-            print('-- {} : '.format(var_name))
             if var_name != "self":
                 arg_string += var_name + ":" + str(args[i]) + ","
         arg_string = arg_string[0:len(arg_string)-1]
