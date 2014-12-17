@@ -1,5 +1,5 @@
 from collections import namedtuple
-from pyutils.events import EventSource
+from again.events import EventSource
 
 import logging
 
