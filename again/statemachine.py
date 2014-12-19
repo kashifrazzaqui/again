@@ -63,6 +63,7 @@ class Event:
 
 
     def equals(self, *args):
+        """Check if any of the arguments provided is equal to this event and return True if such an argument exists."""
         for event in args:
             event_name = event
             if isinstance(event, Event):
@@ -222,6 +223,7 @@ class State:
         raise RuntimeError(msg)
 
     def equals(self, *args):
+        """Check if any of the arguments provided is equal to this state and return True if such an argument exists."""
         for each in args:
             state_name = each
             if isinstance(each, State):
