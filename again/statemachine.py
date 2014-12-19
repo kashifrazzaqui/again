@@ -1,5 +1,6 @@
 from collections import namedtuple
 from again.events import EventSource
+from enum import Enum
 
 import logging
 
@@ -19,14 +20,16 @@ def describe_transition(self):
 
 Transition.__str__ = describe_transition
 
-# TODO Make Event.name and State.name enum
 class Event:
     __slots__ = ('_name', '_payload')
 
     def __init__(self, name=None, payload=None):
         self._name = self.__class__.__name__.upper()
         if name:
-            self._name = name.upper()
+            if isinstance(name, str):
+                self._name = name.upper()
+            else:
+                self._name = name
         self._payload = payload
 
     def invalid(self, state):
@@ -64,8 +67,12 @@ class Event:
             event_name = event
             if isinstance(event, Event):
                 event_name = event.name
-            if self.name == event_name.upper():
-                return True
+            if (isinstance(event_name, str) and isinstance(self.name, str)):
+                if self.name == event_name.upper():
+                    return True
+            elif (isinstance(event_name, Enum) and isinstance(self.name, Enum)):
+                if self.name == event_name:
+                    return True
         return False
 
 
@@ -79,7 +86,10 @@ class State:
         self._state_data = state_data
         self._name = self.__class__.__name__.upper()
         if name:
-            self._name = name.upper()
+            if isinstance(name, str):
+                self._name = name.upper()
+            else:
+                self._name = name
 
     def __str__(self):
         result = ""
@@ -216,8 +226,12 @@ class State:
             state_name = each
             if isinstance(each, State):
                 state_name = each.name
-            if self.name == state_name.upper():
-                return True
+            if (isinstance(state_name, str) and isinstance(self.name, str)):
+                if self.name == state_name.upper():
+                    return True
+            elif (isinstance(state_name, Enum) and isinstance(self.name, Enum)):
+                if state_name == self.name:
+                    return True
         return False
 
 
