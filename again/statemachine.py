@@ -288,13 +288,37 @@ def similarFaults(applicants, event):
 
 
 def example():
-    class TCPClosed(State):
+    class WaterState(Enum):
+        Plasma = "plasma"
+        Vapor = "vapor"
+
+        def __str__(self):
+            return self.value
+
+    liquid_state = 'liquid'
+    solid_state = 'ice'
+    
+    class Action(Enum):
+        deposition = "deposition"
+        sublimation = "sublimation"
+        melting = "melting"
+        freezing = "freezing"
+        vaporization = "vaporization"
+        condensation = "condensation"
+    
+        def __str__(self):
+            return self.value
+
+    ionization_action = 'ionization'
+    deionization_action = 'deionization'
+    
+    class LoggableState(State):
         def consume(self, event):
             print(self.name)
             valid_end_states = super().can(event)
             print(valid_end_states[0].name)
             return valid_end_states[0]
-
+        
     class Listener:
         def before_state_change(self, current, event):
             print('before')
@@ -302,32 +326,41 @@ def example():
         def after_state_change(self, old, event, new):
             print('after')
 
-    class TCPOpen(State):
-        def consume(self, event):
-            valid_end_states = super().can(event)
-            return valid_end_states[0]
+    #events
+    deposition = Event(Action.deposition)
+    sublimation = Event(Action.sublimation)
+    melting = Event(Action.melting)
+    freezing = Event(Action.freezing)
+    vaporization = Event(Action.vaporization)
+    condensation = Event(Action.condensation)
+    ionization = Event(ionization_action)
+    deionization = Event(deionization_action)
 
-    e = Event('open', 7)
-    f = Event('close', "abc")
+    #states
+    plasma = LoggableState(WaterState.Plasma)
+    vapor = LoggableState(WaterState.Vapor)
+    liquid = LoggableState(liquid_state)
+    solid = LoggableState(solid_state)
+    
+    #transitions
+    plasma.on(deionization, vapor)
+    vapor.on(ionization, plasma)
+    vapor.on(deposition, solid)
+    solid.on(sublimation, vapor)
+    solid.on(melting, liquid)
+    liquid.on(freezing, solid)
+    liquid.on(vaporization, vapor)
+    vapor.on(condensation, liquid)
+    vapor.loops(vaporization)
 
-    tcp_closed = TCPClosed('tcp_closed')
-    tcp_open = TCPOpen('tcp_open')
-    tcp_other = State('tcp_other')
-
-    tcp_closed.on(e, tcp_open)
-    tcp_closed.faulty(f)
-    tcp_other.on(e, tcp_other)
-
-    sm = StateMachine(tcp_closed)
-    sm.add_states(tcp_open, tcp_other)
+    sm = StateMachine(liquid)
+    sm.add_states(solid, vapor, plasma)
     l = Listener()
     sm.add_listener('before_state_change', l.before_state_change)
     sm.add_listener('after_state_change', l.after_state_change)
-    sm.consume(e)
-    sm.consume(f)
-    print("StateMachine Description:\n")
-    print(sm)
-
+    sm.consume(freezing)
+    sm.consume(sublimation)
+    sm.consume(vaporization)
 
 if __name__ == '__main__':
     example()
