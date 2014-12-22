@@ -68,10 +68,10 @@ class Event:
             event_name = event
             if isinstance(event, Event):
                 event_name = event.name
-            if (isinstance(event_name, str) and isinstance(self.name, str)):
+            if isinstance(event_name, str) and isinstance(self.name, str):
                 if self.name == event_name.upper():
                     return True
-            elif (isinstance(event_name, Enum) and isinstance(self.name, Enum)):
+            elif isinstance(event_name, Enum) and isinstance(self.name, Enum):
                 if self.name == event_name:
                     return True
         return False
@@ -228,10 +228,10 @@ class State:
             state_name = each
             if isinstance(each, State):
                 state_name = each.name
-            if (isinstance(state_name, str) and isinstance(self.name, str)):
+            if isinstance(state_name, str) and isinstance(self.name, str):
                 if self.name == state_name.upper():
                     return True
-            elif (isinstance(state_name, Enum) and isinstance(self.name, Enum)):
+            elif isinstance(state_name, Enum) and isinstance(self.name, Enum):
                 if state_name == self.name:
                     return True
         return False
