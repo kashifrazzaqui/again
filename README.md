@@ -108,5 +108,3 @@ def demo():
 if __name__ == '__main__':
     demo()
 ```
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/97a1b438eb600bbda17998a7a3195b9a "githalytics.com")](http://githalytics.com/kashifrazzaqui/pyutils)
