@@ -1,7 +1,7 @@
 import os, binascii
 
-def unique_hex(length=8):
-    return binascii.hexlify(os.urandom(int(length/2))).decode()
+def unique_hex(byte_length=4):
+    return binascii.hexlify(os.urandom(byte_length)).decode()
 
 
 if __name__ == '__main__':
