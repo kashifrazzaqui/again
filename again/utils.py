@@ -23,7 +23,7 @@ def natural_sort(item):
             return int(s)
         except ValueError:
             return s
-    return map(try_int, re.findall(r'(\d+|\D+)', item))
+    return tuple(map(try_int, re.findall(r'(\d+|\D+)', item)))
 
 
 if __name__ == '__main__':
