@@ -14,3 +14,4 @@ def run_tests(name, globals_dict):
                 sys.stdout.write('OK')
             else:
                 sys.stdout.write(RED + 'FAIL' + END)
+    sys.stdout.write('\n')
