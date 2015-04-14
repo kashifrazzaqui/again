@@ -12,6 +12,6 @@ def timethis(label, receiver_fn=None):
     finally:
         end = time.time()
         if receiver_fn:
-            receiver(label, start, end)
+            receiver_fn(label, start, end)
         else:
             print('{}: {} to {} -> {} seconds'.format(label, start, end, end-start))
