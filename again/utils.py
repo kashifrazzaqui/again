@@ -1,4 +1,5 @@
-import os, binascii
+import os
+import binascii
 import re
 
 
