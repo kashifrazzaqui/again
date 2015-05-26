@@ -6,7 +6,8 @@ BOLD = '\033[1m'
 END = '\033[0m'
 
 
-def _default_handler(e, *args, **kwargs): pass
+def _default_handler(e, *args, **kwargs):
+    pass
 
 
 def silence(target_exceptions:list, exception_handler=_default_handler):
@@ -40,9 +41,10 @@ def silence_coroutine(target_exceptions:list, exception_handler=_default_handler
                 if isinstance(target_exceptions, list):
                     for each in target_exceptions:
                         if isinstance(e, each):
-                            yield from exception_handler(e, *args, **kwargs)
+                            return exception_handler(e, *args, **kwargs)
                 else:
                     if isinstance(e, target_exceptions):
+                        return exception_handler(e, *args, **kwargs)
                 raise e
 
         return wrapper
