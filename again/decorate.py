@@ -36,7 +36,7 @@ def silence_coroutine(target_exceptions:list, exception_handler=_default_handler
         @wraps(func)
         def wrapper(*args, **kwargs):
             try:
-                yield from func(*args, **kwargs)
+                return (yield from func(*args, **kwargs))
             except Exception as e:
                 if isinstance(target_exceptions, list):
                     for each in target_exceptions:
