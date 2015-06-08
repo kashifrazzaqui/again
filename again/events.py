@@ -1,3 +1,5 @@
+import asyncio
+
 class ListenerRegister(object):
     def __init__(self):
         self._register = {}
@@ -35,6 +37,27 @@ class ListenerRegister(object):
 
     def get_catch_all_listeners(self):
         return self._catch_alls
+
+
+class AsyncEventSource(ListenerRegister):
+    def __init__(self):
+        super(AsyncEventSource, self).__init__()
+
+    @asyncio.coroutine
+    def fire(self, event, *args, **kwargs):
+        for each in self.get_listeners(event):
+            each = asyncio.coroutine(each)
+            yield from each(*args, **kwargs)
+
+        for observer, prefix in self._observers.items():
+            l = getattr(observer, prefix + str(event).lower(), False)
+            if l and callable(l):
+                l = asyncio.coroutine(l)
+                yield from l(*args, **kwargs)
+
+        for each in self.get_catch_all_listeners():
+            each = asyncio.coroutine(each)
+            yield from each(event, *args, **kwargs)
 
 
 class EventSource(ListenerRegister):
