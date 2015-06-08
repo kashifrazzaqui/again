@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='again',
-      version='1.2.1',
+      version='1.2.20',
       author='Kashif Razzaqui',
       author_email='kashif.razzaqui@gmail.com',
       url='https://github.com/kashifrazzaqui/again',
