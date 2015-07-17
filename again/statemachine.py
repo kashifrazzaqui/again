@@ -58,15 +58,11 @@ class Event:
         """
         pass
 
-
-    def equals(self, *args):
-        for event in args:
-            event_name = event
-            if isinstance(event, Event):
-                event_name = event.name
-            if self.name == event_name.upper():
-                return True
-        return False
+    def equals(self, event):
+        if isinstance(event, str):
+            return self.name == event.upper()
+        else:
+            return self.name == event.name.upper()
 
 
 class State:
@@ -302,7 +298,7 @@ def example():
 
     tcp_closed.on(e, tcp_open)
     tcp_closed.faulty(f)
-    tcp_other.on(e, tcp_other)
+    tcp_other.on(e, tcp_closed)
 
     sm = StateMachine(tcp_closed)
     sm.add_states(tcp_open, tcp_other)
