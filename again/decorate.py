@@ -1,4 +1,5 @@
 from functools import wraps
+import inspect
 
 RED = '\033[91m'
 BLUE = '\033[94m'
@@ -56,23 +57,32 @@ def log(fn):
     """
     logs parameters and result - takes no arguments
     """
-
+    TAB_WIDTH = '  '
     def func(*args, **kwargs):
-        arg_string = ""
-        for i in range(0, len(args)):
-            var_name = fn.__code__.co_varnames[i]
-            if var_name != "self":
-                arg_string += var_name + ":" + str(args[i]) + ","
-        arg_string = arg_string[0:len(arg_string) - 1]
-        string = (RED + BOLD + '>> ' + END + 'Calling {0}({1})'.format(fn.__code__.co_name, arg_string))
-        if len(kwargs):
-            string = (RED + BOLD + '>> ' + END + 'Calling {0} with args {1} and kwargs {2}'.format(fn.__code__.co_name,
-                                                                                                   arg_string, kwargs))
-        print(string)
-        result = fn(*args, **kwargs)
-        string = BLUE + BOLD + '<< ' + END + 'Return {0} with result :{1}'.format(fn.__code__.co_name, result)
-        print(string)
-        return result
+        if '_DEBUG' in globals() and _DEBUG == True:
+            arg_string = f""
+            for i in range(0, len(args)):
+                var_name = fn.__code__.co_varnames[i]
+                if var_name != "self":
+                    arg_string += f"{var_name} = {args[i]} : {type(args[i])},"
+
+            if len(kwargs):
+                string = f"{RED}{BOLD}->{END} Calling {fn.__code__.co_name}({arg_string[0:-1]} {kwargs})"
+            else:
+                string = f"{RED}{BOLD}->{END} Calling {fn.__code__.co_name}({arg_string[0:-1]})"
+
+            offset = TAB_WIDTH * len(inspect.stack(0))
+            string = offset + string
+            print(string)
+
+            result = fn(*args, **kwargs)
+            result_string = f"{BLUE}{BOLD}<-{END} {fn.__code__.co_name} returned: {result}"
+            offset = TAB_WIDTH * len(inspect.stack(0))
+            result_string = offset + result_string
+            print(result_string)
+            return result
+        else:
+            return fn(*args, **kwargs)
 
     return func
 
