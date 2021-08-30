@@ -24,7 +24,7 @@ Takes four optional arguments both are boolean and False by default
 
 @log
 def my_func(name, gender):
-    age = findByGender(name)
+    age = find_by_gender(name)
     return age
 ```
 
@@ -32,7 +32,7 @@ def my_func(name, gender):
 
 @logx(supress_results=True)
 def my_func(name, gender):
-    age = findByGender(name)
+    age = find_by_gender(name)
     return age
 ```
 
